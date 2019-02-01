@@ -1,1 +1,2 @@
-name = "datalab"
+"""Package for ebm datalab jupyter notebook stuff
+"""
