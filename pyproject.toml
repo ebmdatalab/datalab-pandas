@@ -3,7 +3,7 @@ requires = ["flit"]
 build-backend = "flit.buildapi"
 
 [tool.flit.metadata]
-module = "datalab"
+module = "ebmdatalab"
 author = "EBM DataLab"
 author-email = "tech@ebmdatalab.net"
 home-page = "https://github.com/ebmdatalab/datalab-pandas"

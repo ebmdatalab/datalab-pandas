@@ -1,5 +1,5 @@
 from mock import patch
-from datalab import bq
+from ebmdatalab import bq
 from pandas import DataFrame
 import tempfile
 
@@ -29,7 +29,7 @@ def test_fingerprint_sql():
     assert fingerprint == bq.fingerprint_sql(same_sql_different_whitespace)
 
 
-@patch('datalab.bq.pd.read_gbq')
+@patch('ebmdatalab.bq.pd.read_gbq')
 def test_cached_read(mock_read_gbq):
     mock_read_gbq.return_value = DataFrame([{'a': 3}])
     sql = "select * from foobar"

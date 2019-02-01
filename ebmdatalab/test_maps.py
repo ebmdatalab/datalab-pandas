@@ -1,4 +1,4 @@
-from datalab import maps
+from ebmdatalab import maps
 import tempfile
 import pandas as pd
 

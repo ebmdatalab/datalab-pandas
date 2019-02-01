@@ -1,4 +1,4 @@
-from datalab import stats
+from ebmdatalab import stats
 import pandas as pd
 import random
 

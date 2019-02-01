@@ -14,7 +14,7 @@ than querying BigQuery again:
 
 
 ```python
-from datalab import bq
+from ebmdatalab import bq
 
 sql = "SELECT * FROM ebmdatalab.hscic.bnf"
 df = bq.cached_read(sql, csv_path='bnf_codes.csv')
@@ -28,7 +28,7 @@ df.head()
 Draw a CCG map, optionally with London separated out:
 
 ```python
-from datalab import maps
+from ebmdatalab import maps
 
 df = pd.DataFrame(
     [
@@ -42,7 +42,7 @@ plt.show()
 ### Logistic regression
 
 ```python
-from datalab import stats
+from ebmdatalab import stats
 import numpy as np
 
 # Three columns of random numbers
