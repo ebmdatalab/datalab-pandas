@@ -6,6 +6,10 @@ common EBMDataLab operations
 
 ## Usage
 
+Install the package as you usually would, e.g.
+
+    pip install ebmdatalab
+
 ### Convenience for caching/storing bigquery data as CSV
 
 This will save the results of the SQL query as a CSV, and when it's
