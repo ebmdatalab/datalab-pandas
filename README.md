@@ -29,7 +29,7 @@ df.head()
 
 ### Maps
 
-Draw a CCG map, optionally with London separated out:
+Draw a CCG map, optionally with London separated out.
 
 ```python
 from ebmdatalab import maps
@@ -41,6 +41,28 @@ df = pd.DataFrame(
     ], columns=['pct', 'val'])
 plt = maps.ccg_map(df, title="foo", column='val', separate_london=True)
 plt.show()
+```
+
+### Deciles
+
+Given a dataframe with a date column and a values column, compute
+percentiles for each date and plot them in a line chart.
+
+```python
+from ebmdatalb import charts
+
+# make a datafrom with a date column and a values column
+df = pd.DataFrame(np.random.rand(1000, 1), columns=['val'])
+months = pd.date_range('2018-01-01', periods=12, freq='M')
+df['month'] = np.random.choice(months, len(df))
+
+charts.deciles_chart(
+        df,
+        period_column='month',
+        column='val',
+        title="Random values",
+        show_outer_percentiles=True)
+
 ```
 
 ### Logistic regression
