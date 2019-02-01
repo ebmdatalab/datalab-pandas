@@ -50,7 +50,7 @@ from ebmdatalab import stats
 import numpy as np
 
 # Three columns of random numbers
-df = pd.DataFrame(np.random(3, 100), columns=['a', 'b', 'c'])
+df = pd.DataFrame(np.random.rand(100, 3), columns=['a', 'b', 'c'])
 formula = 'A ~ B + C'
 stats.compute_regression(df, formula=formula)
 ```
