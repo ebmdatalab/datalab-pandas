@@ -11,7 +11,9 @@ classifiers = ["License :: OSI Approved :: MIT License"]
 requires = [
          "statsmodels",
          "pandas",
-         "pandas-gbq"
+         "pandas-gbq",
+         "geopandas",
+         "descartes"
          ]
 
 [tool.flit.metadata.requires-extra]
