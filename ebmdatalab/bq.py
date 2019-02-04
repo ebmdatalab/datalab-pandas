@@ -34,7 +34,10 @@ def cached_read(sql,
                 'dialect': 'standard'}
     defaults.update(kwargs)
     fingerprint = fingerprint_sql(sql)
-    fingerprint_path = "." + csv_path + '.' + fingerprint + '.tmp'
+    csv_dir, csv_filename = os.path.split(csv_path)
+    fingerprint_path = os.path.join(
+        csv_dir,
+        "." + csv_filename + '.' + fingerprint + '.tmp')
     already_cached = os.path.exists(fingerprint_path)
     if already_cached:
         df = pd.read_csv(csv_path)
