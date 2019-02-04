@@ -31,7 +31,8 @@ def ccg_map(df, title="", column=None, separate_london=True):
     gdf_roe = gdf[gdf['is_london'] == False]
 
     # set common value limits for colour scale
-    vmin, vmax = 20, 85  # min amd max values of cmap
+    vmin = df[column].min()
+    vmax = df[column].max()
     edgecolor = 'black'
     linewidth = 0.1
     cmap = 'OrRd'
