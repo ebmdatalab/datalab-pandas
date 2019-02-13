@@ -45,5 +45,5 @@ def cached_read(sql,
         with open(fingerprint_path, "w") as f:
             f.write("File created by {}".format(__file__))
         df = pd.read_gbq(sql, **defaults)
-        df.to_csv(csv_path)
+        df.to_csv(csv_path, index=False)
     return df
