@@ -6,7 +6,9 @@ common EBMDataLab operations
 
 ## Usage
 
-Install the package as you usually would, e.g.
+Install geopandas using conda, then install the package as you usually would, e.g.
+
+    conda install geopandas
 
     pip install ebmdatalab
 
