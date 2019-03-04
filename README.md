@@ -49,7 +49,7 @@ Given a dataframe with a date column and a values column, compute
 percentiles for each date and plot them in a line chart.
 
 ```python
-from ebmdatalb import charts
+from ebmdatalab import charts
 
 # make a datafrom with a date column and a values column
 df = pd.DataFrame(np.random.rand(1000, 1), columns=['val'])
