@@ -1,10 +1,21 @@
 import seaborn as sns
 import matplotlib.pyplot as plt
-import matplotlib.gridspec as gridspec
 import numpy as np
-import pandas as pd
-import datetime
 import matplotlib
+
+# Legend locations for matplotlib
+BEST = 0
+UPPER_RIGHT = 1
+UPPER_LEFT = 2
+LOWER_LEFT = 3
+LOWER_RIGHT = 4
+RIGHT = 5
+CENTER_LEFT = 6
+CENTER_RIGHT = 7
+LOWER_CENTER = 8
+UPPER_CENTER = 9
+CENTER = 10
+
 
 def add_percentiles(
         df,
@@ -38,6 +49,7 @@ def deciles_chart(
         period_column=None,
         column=None,
         title="",
+        ylabel="",
         show_outer_percentiles=True):
     """period_column must be dates / datetimes
     """
@@ -48,9 +60,21 @@ def deciles_chart(
         column=column,
         show_outer_percentiles=show_outer_percentiles)
     linestyles = {
-        'decile': {'color': 'b', 'line': 'b--', 'linewidth': 1, 'label': 'decile'},
-        'median': {'color': 'b', 'line': 'b-', 'linewidth': 1.5, 'label': 'median'},
-        'percentile': {'color': 'b', 'line': 'b:', 'linewidth': 0.8, 'label': '1st-9th, 91st-99th percentile'}
+        'decile': {
+            'color': 'b',
+            'line': 'b--',
+            'linewidth': 1,
+            'label': 'decile'},
+        'median': {
+            'color': 'b',
+            'line': 'b-',
+            'linewidth': 1.5,
+            'label': 'median'},
+        'percentile': {
+            'color': 'b',
+            'line': 'b:',
+            'linewidth': 0.8,
+            'label': '1st-9th, 91st-99th percentile'}
     }
     label_seen = []
     for percentile in range(1, 100):   # plot each decile line
@@ -82,7 +106,7 @@ def deciles_chart(
             linewidth=style['linewidth'],
             color=style['color'],
             label=label)
-    ax.set_ylabel('Trimethoprim as percentage of \ntrimethoprim and nitrofurantoin', size =15, alpha=0.6)
+    ax.set_ylabel(ylabel, size=15, alpha=0.6)
     if title:
         ax.set_title(title, size=18)
     # set ymax across all subplots as largest value across dataset
@@ -92,11 +116,14 @@ def deciles_chart(
 
     plt.setp(ax.xaxis.get_majorticklabels(), rotation=90)
     ax.xaxis.set_major_formatter(matplotlib.dates.DateFormatter('%B %Y'))
-    ax.legend(bbox_to_anchor=(0., -.4, 1., .102), loc=8,
-              ncol=2, fontsize=12, borderaxespad=0.)
-
-
-    plt.subplots_adjust(wspace = 0.07,hspace = 0.15)
-    #plt.savefig('Figure 1.png', format='png', dpi=300,bbox_inches='tight')
-    plt.tight_layout()
+    ax.legend(
+        bbox_to_anchor=(1.6, .8),  # arbitrary location in axes coordinates (x0, y0, w, h)
+        loc=CENTER_RIGHT,  # which part of the bounding box should be placed at bbox_to_anchor
+        ncol=1,  # number of columns in the legend
+        fontsize=12,
+        borderaxespad=0.)  # padding between the axes and legend border in font-size units
+    #plt.subplots_adjust(wspace=0.07, hspace=0.15)
+    #plt.tight_layout()
     return plt
+
+# He asked around and the consensus view is don't do a procedure on the endothelium. There's no trials to base that on, it's just felt in the absence of evidence. LASIK starting to get a bad press in the states, rare side effects
