@@ -122,8 +122,4 @@ def deciles_chart(
         ncol=1,  # number of columns in the legend
         fontsize=12,
         borderaxespad=0.)  # padding between the axes and legend border in font-size units
-    #plt.subplots_adjust(wspace=0.07, hspace=0.15)
-    #plt.tight_layout()
     return plt
-
-# He asked around and the consensus view is don't do a procedure on the endothelium. There's no trials to base that on, it's just felt in the absence of evidence. LASIK starting to get a bad press in the states, rare side effects
