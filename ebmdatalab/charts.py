@@ -50,7 +50,9 @@ def deciles_chart(
         column=None,
         title="",
         ylabel="",
-        show_outer_percentiles=True):
+        show_outer_percentiles=True,
+        show_legend=True
+):
     """period_column must be dates / datetimes
     """
     sns.set_style("whitegrid", {'grid.color': '.9'})
@@ -116,10 +118,14 @@ def deciles_chart(
 
     plt.setp(ax.xaxis.get_majorticklabels(), rotation=90)
     ax.xaxis.set_major_formatter(matplotlib.dates.DateFormatter('%B %Y'))
-    ax.legend(
-        bbox_to_anchor=(1.6, .8),  # arbitrary location in axes coordinates (x0, y0, w, h)
-        loc=CENTER_RIGHT,  # which part of the bounding box should be placed at bbox_to_anchor
-        ncol=1,  # number of columns in the legend
-        fontsize=12,
-        borderaxespad=0.)  # padding between the axes and legend border in font-size units
+    if show_legend:
+        ax.legend(
+            bbox_to_anchor=(1.6, .8),  # arbitrary location in axes
+                                       # coordinates (x0, y0, w, h)
+            loc=CENTER_RIGHT,  # which part of the bounding box should
+                               # be placed at bbox_to_anchor
+            ncol=1,  # number of columns in the legend
+            fontsize=12,
+            borderaxespad=0.)  # padding between the axes and legend
+                               # border in font-size units
     return plt

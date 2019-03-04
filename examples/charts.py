@@ -52,7 +52,9 @@ plt = charts.deciles_chart(
         column='val',
         title="Random values",
         ylabel="n",
-        show_outer_percentiles=True)
+        show_outer_percentiles=True,
+        show_legend=True
+)
 
 # Now add a single line against the deciles
 df_subject = pd.DataFrame(np.random.rand(12, 1), columns=['val']) * 100
