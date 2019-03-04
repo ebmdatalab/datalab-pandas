@@ -25,8 +25,7 @@
 import numpy as np
 import pandas as pd
 from ebmdatalab import maps
-from importlib import reload
-reload(charts)
+
 
 df = pd.read_json('ccg_list_size.json')
 df.columns = ['date', 'pct', 'ccg_name', 'total_list_size']  # The CCG column must be named 'pct'
@@ -41,8 +40,7 @@ plt.show()
 
 # +
 from ebmdatalab import charts
-from importlib import reload
-reload(charts)
+
 # make a datafrom with a date column and a values column
 df = pd.DataFrame(np.random.rand(1000, 1), columns=['val'])
 months = pd.date_range('2018-01-01', periods=12, freq='M')
