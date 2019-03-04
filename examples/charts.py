@@ -25,6 +25,8 @@
 import numpy as np
 import pandas as pd
 from ebmdatalab import maps
+from importlib import reload
+reload(charts)
 
 df = pd.read_json('ccg_list_size.json')
 df.columns = ['date', 'pct', 'ccg_name', 'total_list_size']  # The CCG column must be named 'pct'
