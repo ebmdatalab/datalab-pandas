@@ -23,6 +23,7 @@ def fingerprint_sql(sql):
 
 def cached_read(sql,
                 csv_path=None,
+                use_cache=True,
                 **kwargs):
     """Run SQL in BigQuery and return dataframe, caching results in a CSV
     file
@@ -39,7 +40,7 @@ def cached_read(sql,
         csv_dir,
         "." + csv_filename + '.' + fingerprint + '.tmp')
     already_cached = os.path.exists(fingerprint_path)
-    if already_cached:
+    if use_cache and already_cached:
         df = pd.read_csv(csv_path)
     else:
         with open(fingerprint_path, "w") as f:

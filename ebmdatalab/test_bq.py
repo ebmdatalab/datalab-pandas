@@ -41,4 +41,8 @@ def test_cached_read(mock_read_gbq):
                 sql,
                 csv_path=csv_file.name)
         assert df.loc[0]['a'] == 3
-        mock_read_gbq.assert_called_once()
+        assert mock_read_gbq.call_count == 1
+
+        # and now with `use_cache` param
+        df = bq.cached_read(sql, csv_path=csv_file.name, use_cache=False)
+        assert mock_read_gbq.call_count == 2

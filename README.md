@@ -21,10 +21,12 @@ than querying BigQuery again:
 from ebmdatalab import bq
 
 sql = "SELECT * FROM ebmdatalab.hscic.bnf"
-df = bq.cached_read(sql, csv_path='bnf_codes.csv')
+df = bq.cached_read(sql, csv_path='bnf_codes.csv')  # add `use_cache=False` to override
 df.head()
 
 ```
+
+
 
 ### Other functions
 
