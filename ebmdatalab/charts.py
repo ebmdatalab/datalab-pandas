@@ -86,7 +86,7 @@ def deciles_chart(
         if percentile == 50:
             style = linestyles['median']
             add_label = True
-        elif percentile < 10 or percentile > 90:
+        elif show_outer_percentiles and (percentile < 10 or percentile > 90):
             style = linestyles['percentile']
             if 'percentile' not in label_seen:
                 label_seen.append('percentile')
