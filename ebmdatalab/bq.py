@@ -1,3 +1,4 @@
+import glob
 import os
 import re
 from hashlib import md5
@@ -43,6 +44,11 @@ def cached_read(sql,
     if use_cache and already_cached:
         df = pd.read_csv(csv_path)
     else:
+        old_fingerprint_files = glob.glob(
+            os.path.join(
+                csv_dir, "." + csv_filename + ".*.tmp"))
+        for f in old_fingerprint_files:
+            os.remove(f)
         with open(fingerprint_path, "w") as f:
             f.write("File created by {}".format(__file__))
         df = pd.read_gbq(sql, **defaults)

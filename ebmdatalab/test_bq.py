@@ -46,3 +46,28 @@ def test_cached_read(mock_read_gbq):
         # and now with `use_cache` param
         df = bq.cached_read(sql, csv_path=csv_file.name, use_cache=False)
         assert mock_read_gbq.call_count == 2
+
+
+def _check_cached_read(csv_file, mock_read, sql, expected):
+        mock_read.return_value = expected
+        df = bq.cached_read(sql, csv_path=csv_file.name)
+        assert str(df) == str(expected)
+
+
+@patch('ebmdatalab.bq.pd.read_gbq')
+def test_old_cache_markers_removed(mock_read_gbq):
+    with tempfile.NamedTemporaryFile() as csv_file:
+        # First, cause some sql to be cached
+        inputs_and_outputs = [
+            (
+                "select * from foobar",
+                DataFrame([{'a': 1}])
+            ),
+            (
+                "select * from foobar order by id",
+                DataFrame([{'a': 2}])
+            )
+        ]
+        _check_cached_read(csv_file, mock_read_gbq, *inputs_and_outputs[0])
+        _check_cached_read(csv_file, mock_read_gbq, *inputs_and_outputs[1])
+        _check_cached_read(csv_file, mock_read_gbq, *inputs_and_outputs[0])
