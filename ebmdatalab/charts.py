@@ -120,9 +120,9 @@ def deciles_chart(
     ax.xaxis.set_major_formatter(matplotlib.dates.DateFormatter('%B %Y'))
     if show_legend:
         ax.legend(
-            bbox_to_anchor=(1.6, .8),  # arbitrary location in axes
+            bbox_to_anchor=(1.1, .8),  # arbitrary location in axes
                                        # coordinates (x0, y0, w, h)
-            loc=CENTER_RIGHT,  # which part of the bounding box should
+            loc=CENTER_LEFT,  # which part of the bounding box should
                                # be placed at bbox_to_anchor
             ncol=1,  # number of columns in the legend
             fontsize=12,
