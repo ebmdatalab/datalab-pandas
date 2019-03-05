@@ -56,7 +56,7 @@ def deciles_chart(
     """period_column must be dates / datetimes
     """
     sns.set_style("whitegrid", {'grid.color': '.9'})
-    ax = plt.subplot(1, 1, 1)
+    fig, ax = plt.subplots(1, 1)
     df = add_percentiles(
         df, period_column=period_column,
         column=column,
@@ -128,4 +128,8 @@ def deciles_chart(
             fontsize=12,
             borderaxespad=0.)  # padding between the axes and legend
                                # border in font-size units
+
+    # rotates and right aligns the x labels, and moves the bottom of the
+    # axes up to make room for them
+    fig.autofmt_xdate()
     return plt
