@@ -5,7 +5,7 @@ import matplotlib.gridspec as gridspec
 from pathlib import Path
 
 
-def ccg_map(df, title="", column=None, separate_london=True):
+def ccg_map(df, title="", column=None, separate_london=False, cartogram=False):
     """Draw a CCG map with London separated out
     """
     assert column, "You must specify a column name to plot"
@@ -20,9 +20,17 @@ def ccg_map(df, title="", column=None, separate_london=True):
     df['name'] = df["name"].str.replace("&","AND")
     df = df.set_index('name')
 
-    ccgs = gpd.read_file(data_dir / 'ccgs.json').set_index('name')
+    if cartogram:
+        ccgs = gpd.read_file(data_dir / 'ccgs_cartogram.json')
+    else:
+        ccgs = gpd.read_file(data_dir / 'ccgs.json')
 
-    # remove ones without geometry - these are federations rather than individual CCGs
+    # Normalise because the two GeoJSON files have a different format
+    ccgs['name'] = ccgs['name'].str.upper()
+    ccgs = ccgs.set_index('name')
+
+    # remove ones without geometry - these are federations rather than
+    # individual CCGs
     ccgs = ccgs[~ccgs['geometry'].isnull()]
     gdf = ccgs.join(df)
 

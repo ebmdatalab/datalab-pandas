@@ -21,17 +21,21 @@
 #
 # Draw a CCG map, optionally with London separated out.
 
-# +
+# + {"scrolled": false}
 import numpy as np
 import pandas as pd
 from ebmdatalab import maps
-
 
 df = pd.read_json('ccg_list_size.json')
 df.columns = ['date', 'pct', 'ccg_name', 'total_list_size']  # The CCG column must be named 'pct'
 plt = maps.ccg_map(df, title="CCG list sizes", column='total_list_size', separate_london=True)
 plt.show()
 # -
+
+# You can also show the map as a cartogram where the CCGs are sized according to their patient population
+
+plt = maps.ccg_map(df, title="CCG list sizes", column='total_list_size', cartogram=True, separate_london=False)
+plt.show()
 
 # ## Deciles
 #
