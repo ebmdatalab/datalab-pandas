@@ -103,7 +103,7 @@ def deciles_chart(
 
         ax.plot(
             data[period_column],
-            100*data[column],
+            data[column],
             style['line'],
             linewidth=style['linewidth'],
             color=style['color'],
@@ -112,7 +112,7 @@ def deciles_chart(
     if title:
         ax.set_title(title, size=18)
     # set ymax across all subplots as largest value across dataset
-    ax.set_ylim([0, 100*df[column].max()*1.05])
+    ax.set_ylim([0, df[column].max()*1.05])
     ax.tick_params(labelsize=12)
     ax.set_xlim([df[period_column].min(), df[period_column].max()]) # set x axis range as full date range
 
