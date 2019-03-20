@@ -9,6 +9,9 @@ common EBMDataLab operations
 Install the package as you usually would, e.g.
 
     pip install ebmdatalab
+To install upgrades you should use
+
+    pip install ebmdatalab --upgrade
 
 ### Convenience for caching/storing bigquery data as CSV
 
