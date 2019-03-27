@@ -14,14 +14,16 @@ Install the package as you usually would, e.g.
 
 This will save the results of the SQL query as a CSV, and when it's
 run again, as long as the SQL hasn't changed, load that CSV rather
-than querying BigQuery again:
+than querying BigQuery again. Use a `.zip`, `.gz`, `.bz2` or `.xz`
+file extension to store the cache in a compressed format, or `.csv`
+for uncompressed:
 
 
 ```python
 from ebmdatalab import bq
 
 sql = "SELECT * FROM ebmdatalab.hscic.bnf"
-df = bq.cached_read(sql, csv_path='bnf_codes.csv')  # add `use_cache=False` to override
+df = bq.cached_read(sql, csv_path='bnf_codes.zip')  # add `use_cache=False` to override
 df.head()
 
 ```
