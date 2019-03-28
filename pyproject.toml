@@ -10,8 +10,8 @@ home-page = "https://github.com/ebmdatalab/datalab-pandas"
 classifiers = ["License :: OSI Approved :: MIT License"]
 requires = [
          "statsmodels",
-         "pandas",
-         "pandas-gbq",
+         "pandas >= 0.24",
+         "pandas-gbq >= 0.8.0",
          "geopandas",
          "descartes"
          ]
