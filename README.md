@@ -54,6 +54,8 @@ To install a package locally for development, install with a symlink so you can 
 **1. Clone repository to local drive e.g. through GitHub desktop.**
 
 **2. Open Anaconda command prompt by right-clicking and selecting `Run as administrator`.**
+  - Type `pip list` to check that `ebmdatalab` is installed
+  - Uninstall using `pip uninstall ebmdatalab`
   - Install `flit`: check if already installed using e.g. `flit help`, if not, type `pip install flit`
   - Change directory to work in same location as the repo e.g. `>cd C:\Users\hcurtis\Documents\GitHub\datalab-pandas`
   - Install `symlink`: `flit install --symlink`
