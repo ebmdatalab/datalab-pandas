@@ -5,9 +5,12 @@ import matplotlib.gridspec as gridspec
 from pathlib import Path
 
 
-def ccg_map(df, title="", column=None, separate_london=False, cartogram=False):
+def ccg_map(df, title="", column=None, separate_london=False, cartogram=False,
+            subplot_spec=None):
     """Draw a CCG map with London separated out
     """
+    # Because this uses subplots to arrange London and England,
+    # the only way to arrange nested subplots is via a subplotspec
     assert column, "You must specify a column name to plot"
     df = df.copy()
     # input df must have 'pct' column, plus others as specified
@@ -57,18 +60,18 @@ def ccg_map(df, title="", column=None, separate_london=False, cartogram=False):
         if title:
             ax.set_title(title, size=14)
         ax.axis('off')
-
+    fig = plt.gcf()
+    if not subplot_spec:
+        subplot_spec = gridspec.GridSpec(1, 1)[0]
     if separate_london:
-        fig = plt.figure(figsize=(12, 12))
-        gs = gridspec.GridSpec(
-            ncols=2, nrows=2, figure=fig, height_ratios=[3, 1])
+        gs = gridspec.GridSpecFromSubplotSpec(
+            nrows=2, ncols=1, height_ratios=[3, 1], subplot_spec=subplot_spec)
         roe_ax = fig.add_subplot(gs[0, 0])
         ldn_ax = fig.add_subplot(gs[1, 0])
 
         plot(gdf_roe, roe_ax, title="England (excluding London):\n{}".format(title))
         plot(gdf_london, ldn_ax, title="London:\n{}".format(title), legend=False)
     else:
-        fig = plt.figure(figsize=(8, 8))
-        ax = fig.add_subplot(1, 1, 1)
+        ax = plt.subplot(subplot_spec)
         plot(gdf, ax, title=title)
     return plt

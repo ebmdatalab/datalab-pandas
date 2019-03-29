@@ -26,6 +26,7 @@ import numpy as np
 import pandas as pd
 from ebmdatalab import maps
 
+plt.figure(figsize=(12,8))
 df = pd.read_json('ccg_list_size.json')
 df.columns = ['date', 'pct', 'ccg_name', 'total_list_size']  # The CCG column must be named 'pct'
 plt = maps.ccg_map(df, title="CCG list sizes", column='total_list_size', separate_london=True)
@@ -44,13 +45,17 @@ plt.show()
 
 # +
 from ebmdatalab import charts
+import matplotlib.gridspec as gridspec
+
+import importlib
+importlib.reload(charts)
 
 # make a datafrom with a date column and a values column
 df = pd.DataFrame(np.random.rand(1000, 1), columns=['val'])
 months = pd.date_range('2018-01-01', periods=12, freq='M')
-df['month'] = np.random.choice(months, len(df))
+df['month'] = pd.to_datetime(np.random.choice(months, len(df)))
 
-plt = charts.deciles_chart(
+charts.deciles_chart(
         df,
         period_column='month',
         column='val',

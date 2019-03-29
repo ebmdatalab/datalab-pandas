@@ -51,12 +51,13 @@ def deciles_chart(
         title="",
         ylabel="",
         show_outer_percentiles=True,
-        show_legend=True
-):
+        show_legend=True,
+        ax=None):
     """period_column must be dates / datetimes
     """
     sns.set_style("whitegrid", {'grid.color': '.9'})
-    fig, ax = plt.subplots(1, 1)
+    if not ax:
+        fig, ax = plt.subplots(1, 1)
     df = add_percentiles(
         df, period_column=period_column,
         column=column,
@@ -114,22 +115,23 @@ def deciles_chart(
     # set ymax across all subplots as largest value across dataset
     ax.set_ylim([0, df[column].max()*1.05])
     ax.tick_params(labelsize=12)
-    ax.set_xlim([df[period_column].min(), df[period_column].max()]) # set x axis range as full date range
+    ax.set_xlim(
+        [df[period_column].min(),
+         df[period_column].max()])  # set x axis range as full date range
 
     plt.setp(ax.xaxis.get_majorticklabels(), rotation=90)
     ax.xaxis.set_major_formatter(matplotlib.dates.DateFormatter('%B %Y'))
     if show_legend:
         ax.legend(
             bbox_to_anchor=(1.1, .8),  # arbitrary location in axes
-                                       # coordinates (x0, y0, w, h)
-            loc=CENTER_LEFT,  # which part of the bounding box should
-                               # be placed at bbox_to_anchor
-            ncol=1,  # number of columns in the legend
+                                       #  specified as (x0, y0, w, h)
+            loc=CENTER_LEFT,           # which part of the bounding box should
+                                       #  be placed at bbox_to_anchor
+            ncol=1,                    # number of columns in the legend
             fontsize=12,
-            borderaxespad=0.)  # padding between the axes and legend
-                               # border in font-size units
-
+            borderaxespad=0.)          # padding between the axes and legend
+                                       #  specified in font-size units
     # rotates and right aligns the x labels, and moves the bottom of the
     # axes up to make room for them
-    fig.autofmt_xdate()
+    plt.gcf().autofmt_xdate()
     return plt
