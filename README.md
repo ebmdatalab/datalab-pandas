@@ -55,23 +55,22 @@ To install a package locally for development, install with a symlink so you can 
 
 **2. Open Anaconda command prompt by right-clicking and selecting `Run as administrator`.**
   - Type `pip list` to check that `ebmdatalab` is installed
-  - Uninstall using `pip uninstall ebmdatalab`
+    - If it is, uninstall using `pip uninstall ebmdatalab`
   - Install `flit`: check if already installed using e.g. `flit help`, if not, type `pip install flit`
   - Change directory to work in same location as the repo e.g. `>cd C:\Users\hcurtis\Documents\GitHub\datalab-pandas`
   - Install `symlink`: `flit install --symlink`
   
 **3. Make changes to the package `.py` files as required**
    - Edit code e.g. via Jupyter notebook
-   - Open `__init__.py` and increase the version number
+   - If you think this change should be incorporated into its own release, open `__init__.py` and increase the version number
    
 **4. Test the changes**
-   - Use the following commands in notebook to use your changed version of package (e.g. for `charts`):
-            
-            `import importlib`
-            
-            `from ebmdatalab import charts`
-            
-            `importlib.reload(charts)`
+   - To avoid having to restart the kernel every time you make a change, add the following commands in your notebook to tell the kernel to update its reference to the package (e.g. for `charts`):
+```python
+import importlib
+from ebmdatalab import charts
+importlib.reload(charts)
+```
 
 **5. Push changes**
    - Open GitHub desktop and you should see your changed files.
