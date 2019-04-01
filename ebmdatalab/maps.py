@@ -5,8 +5,13 @@ import matplotlib.gridspec as gridspec
 from pathlib import Path
 
 
-def ccg_map(df, title="", column=None, separate_london=False, cartogram=False,
-            subplot_spec=None):
+def ccg_map(df,
+            title="",
+            column=None,
+            separate_london=False,
+            cartogram=False,
+            subplot_spec=None,
+            show_legend=True):
     """Draw a CCG map with London separated out
     """
     # Because this uses subplots to arrange London and England,
@@ -40,7 +45,6 @@ def ccg_map(df, title="", column=None, separate_london=False, cartogram=False,
     # Split into london and rest of England
     gdf_london = gdf[gdf['is_london'] == True]
     gdf_roe = gdf[gdf['is_london'] == False]
-
     # set common value limits for colour scale
     vmin = df[column].min()
     vmax = df[column].max()
@@ -68,10 +72,18 @@ def ccg_map(df, title="", column=None, separate_london=False, cartogram=False,
             nrows=2, ncols=1, height_ratios=[3, 1], subplot_spec=subplot_spec)
         roe_ax = fig.add_subplot(gs[0, 0])
         ldn_ax = fig.add_subplot(gs[1, 0])
-
-        plot(gdf_roe, roe_ax, title="England (excluding London):\n{}".format(title))
-        plot(gdf_london, ldn_ax, title="London:\n{}".format(title), legend=False)
+        plot(gdf_roe,
+             roe_ax,
+             title="England (excluding London):\n{}".format(title),
+             legend=show_legend)
+        plot(gdf_london,
+             ldn_ax,
+             title="London:\n{}".format(title),
+             legend=False)
     else:
         ax = plt.subplot(subplot_spec)
-        plot(gdf, ax, title=title)
+        plot(gdf,
+             ax,
+             title=title,
+             legend=show_legend)
     return plt
