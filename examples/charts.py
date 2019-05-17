@@ -28,11 +28,11 @@ plt = maps.ccg_map(
     title="CCG list sizes", 
     map_year='2019',  # leave this unset to select current year
     column='total_list_size', 
-    separate_london=True)
+    separate_london=True,
+    london_layout='horizontal'
+)
 plt.show()
 # -
-
-
 
 # You can also show the map as a cartogram where the CCGs are sized according to their patient population
 

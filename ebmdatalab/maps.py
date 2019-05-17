@@ -11,6 +11,7 @@ def ccg_map(df,
             title="",
             column=None,
             separate_london=False,
+            london_layout='horizontal',
             cartogram=False,
             subplot_spec=None,
             show_legend=True,
@@ -90,10 +91,17 @@ def ccg_map(df,
     if not subplot_spec:
         subplot_spec = gridspec.GridSpec(1, 1)[0]
     if separate_london:
-        gs = gridspec.GridSpecFromSubplotSpec(
-            nrows=2, ncols=1, height_ratios=[3, 1], subplot_spec=subplot_spec)
-        roe_ax = fig.add_subplot(gs[0, 0])
-        ldn_ax = fig.add_subplot(gs[1, 0])
+        if london_layout == 'horizontal':
+            gs = gridspec.GridSpecFromSubplotSpec(
+                nrows=1, ncols=2, width_ratios=[1, 2], subplot_spec=subplot_spec)
+            ldn_ax = fig.add_subplot(gs[0, 0])
+            roe_ax = fig.add_subplot(gs[0, 1])
+        else:
+            gs = gridspec.GridSpecFromSubplotSpec(
+                nrows=2, ncols=1, height_ratios=[2, 1], subplot_spec=subplot_spec)
+            roe_ax = fig.add_subplot(gs[0, 0])
+            ldn_ax = fig.add_subplot(gs[1, 0])
+
         plot(gdf_roe,
              roe_ax,
              title="England (excluding London):\n{}".format(title),
