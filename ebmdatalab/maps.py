@@ -59,7 +59,7 @@ def ccg_map(df,
     # Check we can map all the CCGs named in the input data
     diff = np.setdiff1d(df.index, ccgs.index)
     if len(diff) > 0:
-        raise BaseException("Data contains CCG codes we can't map: {}".format(diff))
+        raise BaseException("Data contains CCG names we can't map: {}".format(diff))
 
     # Join map with data
     gdf = ccgs.join(df)
