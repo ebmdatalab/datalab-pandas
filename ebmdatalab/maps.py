@@ -1,4 +1,6 @@
+import glob
 import geopandas as gpd
+import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
@@ -11,7 +13,8 @@ def ccg_map(df,
             separate_london=False,
             cartogram=False,
             subplot_spec=None,
-            show_legend=True):
+            show_legend=True,
+            map_year=None):
     """Draw a CCG map with London separated out
     """
     # Because this uses subplots to arrange London and England,
@@ -20,31 +23,50 @@ def ccg_map(df,
     df = df.copy()
     # input df must have 'pct' column, plus others as specified
     data_dir = Path(__file__).parent / 'data'
+
+    # Add names and if it's London. Note the names in ccg_for_map must
+    # match names in the CCG geojson, as that doesn't include codes at
+    # the momemt
     names = pd.read_csv(data_dir / 'ccg_for_map.csv')
-    # Add names and if it's london
-    df = df.merge(names[['code', 'name', 'is_london']], left_on="pct", right_on="code")
-    # Normalise names so they match ccgs file
-    df['name'] = df['name'].str.upper()
-    df['name'] = df["name"].str.replace("&","AND")
+
+    # Check we know about all the codes in the input data
+    diff = np.setdiff1d(df["pct"], names['code'])
+    if len(diff) > 0:
+        raise BaseException("Data contains CCG codes we don't know about: {}".format(diff))
+
+    df = df.merge(names[['code', 'name', 'is_london']],
+                  left_on="pct",
+                  right_on="code")
     df = df.set_index('name')
 
+    # Load map data
     if cartogram:
         ccgs = gpd.read_file(data_dir / 'ccgs_cartogram.json')
     else:
-        ccgs = gpd.read_file(data_dir / 'ccgs.json')
-
-    # Normalise because the two GeoJSON files have a different format
+        if map_year:
+            map_file = data_dir / "ccgs_{}.json".format(map_year)
+        else:
+            map_file = sorted(glob.glob(str(data_dir / "ccgs_2*.json")))[-1]
+        ccgs = gpd.read_file(map_file)
+    # Normalise names to match `ccg_fo_map` format (above)
     ccgs['name'] = ccgs['name'].str.upper()
     ccgs = ccgs.set_index('name')
-
-    # remove ones without geometry - these are federations rather than
-    # individual CCGs
+    # Remove ones without geometry - these are (usually) federations
+    # rather than individual CCGs
     ccgs = ccgs[~ccgs['geometry'].isnull()]
+
+    # Check we can map all the CCGs named in the input data
+    diff = np.setdiff1d(df.index, ccgs.index)
+    if len(diff) > 0:
+        raise BaseException("Data contains CCG codes we can't map: {}".format(diff))
+
+    # Join map with data
     gdf = ccgs.join(df)
 
     # Split into london and rest of England
     gdf_london = gdf[gdf['is_london'] == True]
     gdf_roe = gdf[gdf['is_london'] == False]
+
     # set common value limits for colour scale
     vmin = df[column].min()
     vmax = df[column].max()

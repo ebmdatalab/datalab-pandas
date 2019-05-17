@@ -5,16 +5,6 @@
 #     display_name: Python (jupyter virtualenv)
 #     language: python
 #     name: jupyter
-#   language_info:
-#     codemirror_mode:
-#       name: ipython
-#       version: 3
-#     file_extension: .py
-#     mimetype: text/x-python
-#     name: python
-#     nbconvert_exporter: python
-#     pygments_lexer: ipython3
-#     version: 3.6.5
 # ---
 
 # ## Maps
@@ -25,17 +15,33 @@
 import numpy as np
 import pandas as pd
 from ebmdatalab import maps
+import matplotlib.pyplot as plt
+from importlib import reload
+reload(maps)
 
 plt.figure(figsize=(12,8))
 df = pd.read_json('ccg_list_size.json')
 df.columns = ['date', 'pct', 'ccg_name', 'total_list_size']  # The CCG column must be named 'pct'
-plt = maps.ccg_map(df, title="CCG list sizes", column='total_list_size', separate_london=True)
+df = df[df['date'] == '2018-10-01']
+plt = maps.ccg_map(
+    df, 
+    title="CCG list sizes", 
+    map_year='2019',  # leave this unset to select current year
+    column='total_list_size', 
+    separate_london=True)
 plt.show()
 # -
 
+
+
 # You can also show the map as a cartogram where the CCGs are sized according to their patient population
 
-plt = maps.ccg_map(df, title="CCG list sizes", column='total_list_size', cartogram=True, separate_london=False)
+plt = maps.ccg_map(
+    df, 
+    title="CCG list sizes", 
+    column='total_list_size', 
+    cartogram=True, 
+    separate_london=False)
 plt.show()
 
 # ## Deciles
