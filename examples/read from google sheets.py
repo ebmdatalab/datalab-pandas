@@ -25,8 +25,8 @@
 # +
 import pandas as pd
 
-# This URL obtained via the Google Sheets's `publish to the web` menu (File > Publish to the web; 
-# select the worksheet from the first dropdown and "comma-separated values" from the second; 
+# This URL obtained via the Google Sheets's `publish to the web` menu (File > Publish to the web;
+# select the worksheet from the first dropdown and "comma-separated values" from the second;
 # copy the link)
 google_sheet = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTefoHueV7W523NR2uc5ckS9zJFeuWFr2v84WkzThbobQq5KPKIqlued_UqRCy31YGhF4P3XEyJWlI8/pub?gid=252563648&single=true&output=csv"
 

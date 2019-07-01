@@ -28,7 +28,6 @@ import pandas as pd
 from ebmdatalab import stats
 
 # Three columns of random numbers
-df = pd.DataFrame(np.random.rand(100, 3), columns=['A', 'B', 'C'])
-formula = 'A ~ B + C'
+df = pd.DataFrame(np.random.rand(100, 3), columns=["A", "B", "C"])
+formula = "A ~ B + C"
 stats.compute_regression(df, formula=formula)
-

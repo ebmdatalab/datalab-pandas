@@ -28,7 +28,7 @@
 #
 # [This is an excellent primer](http://jonathansoma.com/lede/algorithms-2017/classes/fuzziness-matplotlib/how-pandas-uses-matplotlib-plus-figures-axes-and-subplots/), worth reading all the way through.
 #
-# If you want to lay things out in grids that span colums, with varying widths, you need to use a `GridSpec`. You also need to do this if you want to nest subplots within each other.  Therefore, the recommended layout methods below always use gridspecs, because you *might as well*. 
+# If you want to lay things out in grids that span colums, with varying widths, you need to use a `GridSpec`. You also need to do this if you want to nest subplots within each other.  Therefore, the recommended layout methods below always use gridspecs, because you *might as well*.
 
 # +
 import numpy as np
@@ -43,51 +43,53 @@ from ebmdatalab import maps, charts
 # ## Show two charts side-by-side
 
 # +
-# Make the figure. `figsize` is defined in inches; to vary how this 
+# Make the figure. `figsize` is defined in inches; to vary how this
 # is rendered to pixels, you can also provide a `dpi` argument
 f = plt.figure(figsize=(12, 4))
-f.suptitle('Sharing Y axis')
+f.suptitle("Sharing Y axis")
 
 # This magically aligns dates
 f.autofmt_xdate()
 
-# Define a layout that is one row deep and two columns wide. 
+# Define a layout that is one row deep and two columns wide.
 # Note that passing in a `figure` is optional due to the statefulness of the pyplot interface, mentioned above
 layout = gridspec.GridSpec(1, 2, figure=f)
 
-# Get references to the axes for each of the two cells, for us to 
+# Get references to the axes for each of the two cells, for us to
 # pass to plotting functions later
 left_plot = plt.subplot(layout[0])
-right_plot = plt.subplot(layout[1], sharey=ax1)  # Share the Y axis 
+right_plot = plt.subplot(layout[1], sharey=ax1)  # Share the Y axis
 # ...and because it's shared, suppress ticks on the second chart
-plt.setp(right_plot.get_yticklabels(), visible=False)  
+plt.setp(right_plot.get_yticklabels(), visible=False)
 
 
 # make a datafrom with a date column and values columns
-df = pd.DataFrame(np.random.rand(1000, 2), columns=['val1', 'val2'])
-months = pd.date_range('2018-01-01', periods=12, freq='M')
-df['month'] = np.random.choice(months, len(df))
+df = pd.DataFrame(np.random.rand(1000, 2), columns=["val1", "val2"])
+months = pd.date_range("2018-01-01", periods=12, freq="M")
+df["month"] = np.random.choice(months, len(df))
 
 # Plot a deciles chart on the left axis
 charts.deciles_chart(
     df,
-    period_column='month',
-    column='val1',
+    period_column="month",
+    column="val1",
     title="Random values",
     ylabel="n",
     show_outer_percentiles=True,
     show_legend=False,
-    ax=left_plot)
+    ax=left_plot,
+)
 
 # ...and one on the right axis
 charts.deciles_chart(
     df,
-    period_column='month',
-    column='val2',
+    period_column="month",
+    column="val2",
     title="Random values 2",
     show_outer_percentiles=True,
     show_legend=True,
-    ax=right_plot)
+    ax=right_plot,
+)
 # -
 
 # ## Showing a map and a chart side-by-side
@@ -98,7 +100,7 @@ charts.deciles_chart(
 
 # +
 f = plt.figure(figsize=(16, 6))
-f.suptitle('Map next to chart')
+f.suptitle("Map next to chart")
 f.autofmt_xdate()
 
 # Define a layout that is one row deep and two columns wide
@@ -107,31 +109,40 @@ layout = gridspec.GridSpec(1, 2, figure=f)
 # Get subplot references for these two cells
 
 # Per above, we have to pass a subplot_spec to maps
-subplot_spec = layout[0]   
+subplot_spec = layout[0]
 
 # For the chart, an axis will suffice
-ax2 = plt.subplot(layout[1]) 
+ax2 = plt.subplot(layout[1])
 
 # Put a map on the left
-df = pd.read_json('ccg_list_size.json')
-df.columns = ['date', 'pct', 'ccg_name', 'total_list_size']  # The CCG column must be named 'pct'
-maps.ccg_map(df, title="CCG list sizes", column='total_list_size', 
-             cartogram=True, separate_london=False, 
-             subplot_spec=subplot_spec)
+df = pd.read_json("ccg_list_size.json")
+df.columns = [
+    "date",
+    "pct",
+    "ccg_name",
+    "total_list_size",
+]  # The CCG column must be named 'pct'
+maps.ccg_map(
+    df,
+    title="CCG list sizes",
+    column="total_list_size",
+    cartogram=True,
+    separate_london=False,
+    subplot_spec=subplot_spec,
+)
 
 
 # Put a chart on the right
-df = pd.DataFrame(np.random.rand(1000, 2), columns=['val1', 'val2'])
-months = pd.date_range('2018-01-01', periods=12, freq='M')
-df['month'] = np.random.choice(months, len(df))
+df = pd.DataFrame(np.random.rand(1000, 2), columns=["val1", "val2"])
+months = pd.date_range("2018-01-01", periods=12, freq="M")
+df["month"] = np.random.choice(months, len(df))
 charts.deciles_chart(
     df,
-    period_column='month',
-    column='val2',
+    period_column="month",
+    column="val2",
     title="Random values 2",
     show_outer_percentiles=True,
     show_legend=True,
-    ax=ax2
+    ax=ax2,
 )
 plt.show()
-
