@@ -64,7 +64,7 @@ def ccg_map(
         raise BaseException("Data contains CCG names we can't map: {}".format(diff))
 
     # Join map with data
-    gdf = ccgs.join(df)
+    gdf = ccgs.join(df, rsuffix="_orig")
 
     # Split into london and rest of England
     gdf_london = gdf[gdf["is_london"] == True]
