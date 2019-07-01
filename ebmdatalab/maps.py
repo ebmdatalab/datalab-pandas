@@ -43,14 +43,16 @@ def ccg_map(
     df = df.set_index("name")
 
     # Load map data
+    cartogram_suffix = ""
     if cartogram:
-        ccgs = gpd.read_file(data_dir / "ccgs_cartogram.json")
+        cartogram_suffix = "_cartogram"
+    if map_year:
+        map_file = data_dir / "ccgs{}_{}.json".format(cartogram_suffix, map_year)
     else:
-        if map_year:
-            map_file = data_dir / "ccgs_{}.json".format(map_year)
-        else:
-            map_file = sorted(glob.glob(str(data_dir / "ccgs_2*.json")))[-1]
-        ccgs = gpd.read_file(map_file)
+        map_file = sorted(
+            glob.glob(str(data_dir / "ccgs{}_2*.json".format(cartogram_suffix)))
+        )[-1]
+    ccgs = gpd.read_file(map_file)
     # Normalise names to match `ccg_fo_map` format (above)
     ccgs["name"] = ccgs["name"].str.upper()
     ccgs = ccgs.set_index("name")
