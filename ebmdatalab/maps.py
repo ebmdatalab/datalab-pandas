@@ -17,6 +17,7 @@ def ccg_map(
     subplot_spec=None,
     show_legend=True,
     map_year=None,
+    plot_options=None,
 ):
     """Draw a CCG map with London separated out
     """
@@ -73,22 +74,27 @@ def ccg_map(
     gdf_roe = gdf[gdf["is_london"] == False]
 
     # set common value limits for colour scale
-    vmin = df[column].min()
-    vmax = df[column].max()
-    edgecolor = "black"
-    linewidth = 0.1
-    cmap = "OrRd"
+    default_plot_options = {
+        'vmin': df[column].min(),
+        'vmax': df[column].max(),
+        'edgecolor': "black",
+        'linewidth': 0.1,
+        'cmap': "OrRd",
+    }
+
+    if plot_options is None:
+        plot_options = {}
+
+    for k, v in default_plot_options.items():
+        if k not in plot_options:
+            plot_options[k] = v
 
     def plot(gdf, ax, title="", legend=True):
         gdf.plot(
             ax=ax,
             column=column,
-            edgecolor=edgecolor,
-            linewidth=linewidth,
             legend=legend,
-            cmap=cmap,
-            vmin=vmin,
-            vmax=vmax,
+            **plot_options
         )
         ax.set_aspect(1.63)
         if title:
