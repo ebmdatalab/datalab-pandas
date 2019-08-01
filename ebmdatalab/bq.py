@@ -1,7 +1,9 @@
 import glob
 import os
+import random
 import re
 from hashlib import md5
+import string
 
 import pandas as pd
 
@@ -46,6 +48,14 @@ def cached_read(sql, csv_path=None, use_cache=True, **kwargs):
             os.remove(f)
         with open(fingerprint_path, "w") as f:
             f.write("File created by {}".format(__file__))
+        temp_path = '{}.{}.tmp'.format(csv_path, _random_str(8))
         df = pd.read_gbq(sql, **defaults)
-        df.to_csv(csv_path, index=False)
+        df.to_csv(temp_path, index=False)
+        os.rename(temp_path, csv_path)
     return df
+
+
+def _random_str(length):
+    return ''.join(
+        [random.choice(string.ascii_lowercase) for _ in range(length)]
+    )
