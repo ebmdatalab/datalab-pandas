@@ -51,7 +51,7 @@ def cached_read(sql, csv_path=None, use_cache=True, **kwargs):
         temp_path = '{}.{}.tmp'.format(csv_path, _random_str(8))
         df = pd.read_gbq(sql, **defaults)
         df.to_csv(temp_path, index=False)
-        os.rename(temp_path, csv_path)
+        os.replace(temp_path, csv_path)
     return df
 
 
