@@ -41,17 +41,19 @@ def cached_read(sql, csv_path=None, use_cache=True, **kwargs):
     if use_cache and already_cached:
         df = pd.read_csv(csv_path)
     else:
+        temp_path = os.path.join(
+            csv_dir, '.tmp{}.{}'.format(_random_str(8), csv_filename)
+        )
+        df = pd.read_gbq(sql, **defaults)
+        df.to_csv(temp_path, index=False)
         old_fingerprint_files = glob.glob(
             os.path.join(csv_dir, "." + csv_filename + ".*.tmp")
         )
         for f in old_fingerprint_files:
             os.remove(f)
+        os.replace(temp_path, csv_path)
         with open(fingerprint_path, "w") as f:
             f.write("File created by {}".format(__file__))
-        temp_path = '{}.{}.tmp'.format(csv_path, _random_str(8))
-        df = pd.read_gbq(sql, **defaults)
-        df.to_csv(temp_path, index=False)
-        os.replace(temp_path, csv_path)
     return df
 
 
