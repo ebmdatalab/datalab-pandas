@@ -8,6 +8,8 @@ from IPython.display import HTML
 plt.rcdefaults()
 # Turn off the max column width so the images won't be truncated
 pd.set_option('display.max_colwidth', -1)
+#Monkey patch the dataframe so the sparklines are displayed
+pd.DataFrame._repr_html_ = lambda self: self.to_html(escape=False)
 
 # Display pandas linebreaks properly
 # Save the original `to_html` function to call it later
@@ -28,16 +30,29 @@ def dist_plot(org_value,
     fig, ax = plt.subplots(1,1,figsize=figsize,**kwags)
     sns.kdeplot(distribution,ax=ax,linewidth=0.9)
     ax.axvline(org_value,color='r',linewidth=1)
-    
-    # remove clutter
+    ax = remove_clutter(ax)
+    return plt
+
+def sparkline_plot(series,
+                   figsize=(3.5, 1),
+                   **kwags): 
+
+    fig, ax = plt.subplots(1,1,figsize=figsize,**kwags)
+    series.reset_index().plot(ax=ax,linewidth=0.9)
+    ax = remove_clutter(ax)
+    return plt
+
+def remove_clutter(ax):
+    ax.legend()#_.remove()
     ax.legend_.remove()
     for k,v in ax.spines.items():
         v.set_visible(False)
     ax.tick_params(labelsize=5)
     ax.set_yticks([])
+    #ax.set_xticks([])
+    ax.xaxis.set_label_text('')
     plt.tight_layout()
-    return plt
-
+    return ax
 
 def html_plt(plt):
     # return in HTML format
@@ -47,7 +62,6 @@ def html_plt(plt):
     html = '<img src=\"data:image/png;base64,{}"/>'.format(
             base64.b64encode(img.getvalue()).decode())
     return html
-
 
 def get_stats(df,
               measure='measure',
@@ -63,8 +77,7 @@ def get_stats(df,
     df = df.dropna()
     return df
 
-
-def sparkline_table(df, column, subset=None):
+def dist_table(df, column, subset=None):
     if subset is not None:
         index = subset
     else:
@@ -77,3 +90,17 @@ def sparkline_table(df, column, subset=None):
     df = df.join(series, how='right')
     df = df.round(decimals=2)
     return HTML(df.to_html(escape=False))
+
+def sparkline_table(df, column, subset=None):
+    if subset is not None:
+        index = subset
+    else:
+        index = df.index
+    series = pd.Series(index=index,name='plots')
+    for idx in index:
+        plot = sparkline_plot(df.loc[idx,column])
+        series.loc[idx] = html_plt(plot)
+    df = df.join(series, how='right')
+    df = df.round(decimals=2)
+    series['one'] = 1
+    return series
