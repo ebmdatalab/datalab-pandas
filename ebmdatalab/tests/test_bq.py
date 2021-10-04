@@ -2,7 +2,8 @@ from mock import patch
 from ebmdatalab import bq
 from pandas import DataFrame
 import tempfile
-
+import pytest
+import os
 
 def test_fingerprint_sql():
     input_sql = 'select *, "Frob" from x -- comment\n' "where (a >= 4);"
@@ -39,6 +40,46 @@ def test_cached_read(mock_read_gbq):
         # and now with `use_cache` param
         df = bq.cached_read(sql, csv_path=csv_file.name, use_cache=False)
         assert mock_read_gbq.call_count == 2
+        assert False
+
+
+@patch("ebmdatalab.bq.pd.read_gbq")
+def test_cached_read_no_csv_path(mock_read_gbq):
+    mock_read_gbq.return_value = DataFrame([{"a": 3}])
+    sql = "select * from foobar"
+
+    # Test no csv path raises error
+    with tempfile.NamedTemporaryFile() as csv_file:
+        with pytest.raises(AssertionError) as exc_info:
+            df = bq.cached_read(sql, csv_path="")
+
+    assert "You must supply csv_path" in str(exc_info.value)
+
+
+@patch("ebmdatalab.bq.pd.read_gbq")
+def test_cached_read_non_existing_csv_dir_made(mock_read_gbq):
+    mock_read_gbq.return_value = DataFrame([{"a": 3}])
+    sql = "select * from foobar"
+
+    # Make temporary folder to save temporary files in
+    folder = tempfile.TemporaryDirectory()
+
+    with tempfile.NamedTemporaryFile(dir=folder.name) as csv_file:
+        # Test csv_dir exists
+        df = bq.cached_read(sql, csv_path=csv_file.name)
+        assert os.path.exists(folder.name)
+
+        # Delete contents of temporary folder
+        for file in os.listdir(folder.name):
+            os.remove(f"{folder.name}/{file}")
+
+        # Delete temporary folder
+        os.rmdir(folder.name)
+        assert os.path.exists(folder.name) is False
+
+        # Test temporary folder is remade
+        df = bq.cached_read(sql, csv_path=csv_file.name)
+        assert os.path.exists(folder.name)
 
 
 def _check_cached_read(csv_file, mock_read, sql, expected):
