@@ -41,6 +41,7 @@ def cached_read(sql, csv_path=None, use_cache=True, **kwargs):
     if use_cache and already_cached:
         df = pd.read_csv(csv_path)
     else:
+        os.makedirs(csv_dir, exist_ok=True)
         temp_path = os.path.join(
             csv_dir, '.tmp{}.{}'.format(_random_str(8), csv_filename)
         )
