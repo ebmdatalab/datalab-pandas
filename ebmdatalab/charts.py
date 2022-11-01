@@ -25,10 +25,10 @@ def add_percentiles(df, period_column=None, column=None, show_outer_percentiles=
     Adds `percentile` column.
 
     """
-    quantiles = np.arange(0.1, 1, 0.1)
+    quantiles = np.round(np.arange(0.1, 1, 0.1), 2)
     if show_outer_percentiles:
         quantiles = np.concatenate(
-            [quantiles, np.arange(0.01, 0.1, 0.01), np.arange(0.91, 1, 0.01)]
+            [quantiles, np.round(np.arange(0.01, 0.1, 0.01), 2), np.round(np.arange(0.91, 1, 0.01), 2)]
         )
     percentiles = (
         df.groupby(period_column)[column]
