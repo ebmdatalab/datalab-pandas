@@ -1,6 +1,7 @@
 import seaborn as sns
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 import matplotlib
 
 # Legend locations for matplotlib
@@ -24,18 +25,20 @@ def add_percentiles(df, period_column=None, column=None, show_outer_percentiles=
     Adds `percentile` column.
 
     """
-    deciles = np.arange(0.1, 1, 0.1)
-    bottom_percentiles = np.arange(0.01, 0.1, 0.01)
-    top_percentiles = np.arange(0.91, 1, 0.01)
+    quantiles = np.arange(0.1, 1, 0.1)
     if show_outer_percentiles:
-        quantiles = np.concatenate((deciles, bottom_percentiles, top_percentiles))
-    else:
-        quantiles = deciles
-    df = df.groupby(period_column)[column].quantile(quantiles).reset_index()
-    df = df.rename(index=str, columns={"level_1": "percentile"})
-    # create integer range of percentiles
-    df["percentile"] = df["percentile"].apply(lambda x: int(x * 100))
-    return df
+        quantiles = np.concatenate(
+            [quantiles, np.arange(0.01, 0.1, 0.01), np.arange(0.91, 1, 0.01)]
+        )
+    percentiles = (
+        df.groupby(period_column)[column]
+        .quantile(pd.Series(quantiles))
+        .reset_index()
+    )
+    percentiles = percentiles.rename(columns={"level_1": "percentile"})
+    percentiles["percentile"] = percentiles["percentile"] * 100
+    
+    return percentiles
 
 
 def deciles_chart(
