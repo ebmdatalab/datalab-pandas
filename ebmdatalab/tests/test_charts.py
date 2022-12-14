@@ -3,11 +3,18 @@ import pandas as pd
 import numpy as np
 
 
+
+
+
 def test_add_percentiles():
     df = pd.DataFrame(np.random.rand(1000, 1), columns=["val"])
     months = pd.date_range("2018-01-01", periods=12, freq="M")
     df["month"] = np.random.choice(months, len(df))
     df = charts.add_percentiles(df, period_column="month", column="val")
+    
+    # We expect that each month has 27 percentiles (9 deciles, 9 bottom percentiles, 9 top percentiles)
+    assert (df.groupby(["month"])["percentile"].nunique().max() == (27))
+
     # This is a statistically-likely test, so might fail!
     assert (df[df.percentile == 99].val > 0.75).all()
 
