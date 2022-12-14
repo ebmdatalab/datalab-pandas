@@ -33,7 +33,7 @@ def add_percentiles(df, period_column=None, column=None, show_outer_percentiles=
     df = df.groupby(period_column)[column].quantile(quantiles).reset_index()
     df = df.rename(index=str, columns={"level_1": "percentile"})
     # create integer range of percentiles
-    df["percentile"] = df["percentile"].apply(lambda x: int(x * 100))
+    df["percentile"] = df["percentile"].apply(lambda x: x * 100)
     return df
 
 
