@@ -21,24 +21,20 @@ CENTER = 10
 def add_percentiles(df, period_column=None, column=None, show_outer_percentiles=True):
     """For each period in `period_column`, compute percentiles across that
     range.
-
     Adds `percentile` column.
-
     """
-    quantiles = np.round(np.arange(0.1, 1, 0.1), 2)
+    deciles = np.arange(0.1, 1, 0.1)
+    bottom_percentiles = np.arange(0.01, 0.1, 0.01)
+    top_percentiles = np.arange(0.91, 1, 0.01)
     if show_outer_percentiles:
-        quantiles = np.concatenate(
-            [quantiles, np.round(np.arange(0.01, 0.1, 0.01), 2), np.round(np.arange(0.91, 1, 0.01), 2)]
-        )
-    percentiles = (
-        df.groupby(period_column)[column]
-        .quantile(pd.Series(quantiles))
-        .reset_index()
-    )
-    percentiles = percentiles.rename(columns={"level_1": "percentile"})
-    percentiles["percentile"] = percentiles["percentile"] * 100
-    
-    return percentiles
+        quantiles = np.concatenate((deciles, bottom_percentiles, top_percentiles))
+    else:
+        quantiles = deciles
+    df = df.groupby(period_column)[column].quantile(quantiles).reset_index()
+    df = df.rename(index=str, columns={"level_1": "percentile"})
+    # create integer range of percentiles
+    df["percentile"] = df["percentile"].apply(lambda x: int(x * 100))
+    return df
 
 
 def deciles_chart(
