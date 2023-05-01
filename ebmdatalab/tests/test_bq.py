@@ -40,7 +40,6 @@ def test_cached_read(mock_read_gbq):
         # and now with `use_cache` param
         df = bq.cached_read(sql, csv_path=csv_file.name, use_cache=False)
         assert mock_read_gbq.call_count == 2
-        assert False
 
 
 @patch("ebmdatalab.bq.pd.read_gbq")
