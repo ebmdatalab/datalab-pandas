@@ -1,4 +1,4 @@
-from mock import patch
+from unittest.mock import patch
 from ebmdatalab import bq
 from pandas import DataFrame
 import tempfile
