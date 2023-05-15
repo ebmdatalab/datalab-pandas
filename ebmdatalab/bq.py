@@ -30,7 +30,11 @@ def cached_read(sql, csv_path=None, use_cache=True, **kwargs):
 
     """
     assert csv_path, "You must supply csv_path"
-    defaults = {"project_id": "ebmdatalab", "dialect": "standard"}
+    defaults = {
+        "project_id": "ebmdatalab",
+        "dialect": "standard",
+        "auth_local_webserver": True,
+    }
     defaults.update(kwargs)
     fingerprint = fingerprint_sql(sql)
     csv_dir, csv_filename = os.path.split(csv_path)
