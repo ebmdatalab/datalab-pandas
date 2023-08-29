@@ -28,11 +28,14 @@ df.head()
 
 ```
 
-To access data in BigQuery, users will need to have the credentials of a service account
-with "BigQuery Guest" and "BigQuery Dataset Guest" roles.  If using this library through
-a notebook derived from the datalab-jupyter image, the credentials should be stored in
-the repo root.  Otherwise, `EBMDATALAB_BQ_CREDENTIALS_PATH` should be set to the path of
-the credentials file.
+To access data in BigQuery, users will need to have the credentials of a service account with "BigQuery Guest" and "BigQuery Dataset Guest" roles.
+You can do that [here](https://console.cloud.google.com/iam-admin/serviceaccounts?project=ebmdatalab).
+
+* Click "+ CREATE SERVICE ACCOUNT", choose a name for the account (eg "Rich Croker service account"), and add the "BigQuery Guest" and "BigQuery Dataset Guest" roles.
+* Select the newly created account, click "KEYS", "ADD KEY", "Create new key", "JSON", and "CREATE".  This will download the credentials.
+
+If using this library through a notebook derived from the datalab-jupyter image, the credentials file should be renamed to `bq-service-account.json` and moved to the repo root.
+Otherwise, `EBMDATALAB_BQ_CREDENTIALS_PATH` should be set to the path of the credentials file.
 
 
 ### Other functions
