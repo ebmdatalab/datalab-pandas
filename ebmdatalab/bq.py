@@ -5,6 +5,7 @@ import re
 from hashlib import md5
 import string
 
+from google.oauth2.service_account import Credentials
 import pandas as pd
 
 
@@ -33,7 +34,7 @@ def cached_read(sql, csv_path=None, use_cache=True, **kwargs):
     defaults = {
         "project_id": "ebmdatalab",
         "dialect": "standard",
-        "auth_local_webserver": True,
+        "credentials": load_credentials(),
     }
     defaults.update(kwargs)
     fingerprint = fingerprint_sql(sql)
@@ -66,3 +67,13 @@ def _random_str(length):
     return ''.join(
         [random.choice(string.ascii_lowercase) for _ in range(length)]
     )
+
+
+def load_credentials():
+    # To authenticate with a service account EBMDATALAB_BQ_CREDENTIALS_PATH should be
+    # the path of a file containing the service account's private key.  See README.md
+    # for requirements of the service account.
+    path = os.getenv("EBMDATALAB_BQ_CREDENTIALS_PATH")
+    if path is None:
+        return
+    return Credentials.from_service_account_file(path)

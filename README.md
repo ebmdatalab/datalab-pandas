@@ -10,7 +10,7 @@ Install the package as you usually would, e.g.
 
     pip install ebmdatalab
 
-### Convenience for caching/storing bigquery data as CSV
+### Convenience for caching/storing BigQuery data as CSV
 
 This will save the results of the SQL query as a CSV, and when it's
 run again, as long as the SQL hasn't changed, load that CSV rather
@@ -28,6 +28,11 @@ df.head()
 
 ```
 
+To access data in BigQuery, users will need to have the credentials of a service account
+with "BigQuery Guest" and "BigQuery Dataset Guest" roles.  If using this library through
+a notebook derived from the datalab-jupyter image, the credentials should be stored in
+the repo root.  Otherwise, `EBMDATALAB_BQ_CREDENTIALS_PATH` should be set to the path of
+the credentials file.
 
 
 ### Other functions
@@ -78,6 +83,3 @@ importlib.reload(charts)
    - Describe and commit changes.
    - Make a pull request to merge branch with master (select from dropdown menu under `Branch`). 
    - This will take you to GitHub where you need to click `Create pull request`
- 
- 
- 
