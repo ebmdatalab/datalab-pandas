@@ -24,9 +24,9 @@ def add_percentiles(df, period_column=None, column=None, show_outer_percentiles=
     Adds `percentile` column.
 
     """
-    deciles = np.arange(0.1, 1, 0.1)
-    bottom_percentiles = np.arange(0.01, 0.1, 0.01)
-    top_percentiles = np.arange(0.91, 1, 0.01)
+    deciles = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
+    bottom_percentiles = [0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09]
+    top_percentiles = [0.91, 0.92, 0.93, 0.94, 0.95, 0.96, 0.97, 0.98, 0.99]
     if show_outer_percentiles:
         quantiles = np.concatenate((deciles, bottom_percentiles, top_percentiles))
     else:
@@ -34,7 +34,7 @@ def add_percentiles(df, period_column=None, column=None, show_outer_percentiles=
     df = df.groupby(period_column)[column].quantile(quantiles).reset_index()
     df = df.rename(index=str, columns={"level_1": "percentile"})
     # create integer range of percentiles
-    df["percentile"] = df["percentile"].apply(lambda x: int(x * 100))
+    df["percentile"] = (df["percentile"] * 100).astype(int)
     return df
 
 
