@@ -7,6 +7,7 @@ import string
 
 from google.oauth2.service_account import Credentials
 import pandas as pd
+import pandas_gbq
 
 
 def fingerprint_sql(sql):
@@ -50,7 +51,7 @@ def cached_read(sql, csv_path=None, use_cache=True, **kwargs):
     temp_path = os.path.join(
         csv_dir, '.tmp{}.{}'.format(_random_str(8), csv_filename)
     )
-    df = pd.read_gbq(sql, **defaults)
+    df = pandas_gbq.read_gbq(sql, **defaults)
     df.to_csv(temp_path, index=False)
     old_fingerprint_files = glob.glob(
         os.path.join(csv_dir, "." + csv_filename + ".*.tmp")
